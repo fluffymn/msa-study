@@ -15,6 +15,18 @@ import javax.servlet.Filter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
+
+    private UserService userService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private Environment env;
+
+    @Autowired
+    public WebSecurity(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder, Environment env) {
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.env = env;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -32,5 +44,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         authenticationFilter.setAuthenticationManager(authenticationManager());
 
         return authenticationFilter;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
     }
 }

@@ -1,5 +1,7 @@
- spring:
-   cloud:
-     config:
-       uri: http://127.0.0.1:8888
-       name: ecommerce
+spring:
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888
+      name: ecommerce
+  profiles: # edit configurations 에서 active profiles로도 설정 가능함
+    active: dev
